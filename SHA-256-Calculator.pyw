@@ -20,18 +20,18 @@ def calculate_sha256():
         entry3.config(state="normal")
         entry3.delete(0, "end")
         entry3.insert(0, sha_signature)
-        entry3.config(fg="black")
+        style.configure("TEntry", foreground="black")
         entry3.config(state="readonly")
     else:
         entry3.config(state="normal")
         entry3.delete(0, "end")
         entry3.insert(0, "Contents do not match!")
-        entry3.config(fg="red")
-        entry3.config(show="")
+        style.configure("TEntry", foreground="red")
         entry3.config(state="readonly")
 
 
 root = Tk()
+style = Style()
 root.title("SHA-256 Calculator")
 
 if os.name == 'nt':
