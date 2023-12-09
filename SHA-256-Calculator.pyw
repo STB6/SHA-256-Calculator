@@ -1,5 +1,8 @@
-import tkinter as tk
+from tkinter import *
+from tkinter.ttk import *
 import hashlib
+import ctypes
+import os
 
 
 def toggle_password(entry, button):
@@ -28,34 +31,41 @@ def calculate_sha256():
         entry3.config(state="readonly")
 
 
-root = tk.Tk()
+root = Tk()
 root.title("SHA-256 Calculator")
 
-entry1 = tk.Entry(root, show="*", width=64, justify="center")
+if os.name == 'nt':
+    ctypes.windll.shcore.SetProcessDpiAwareness(1)
+    ScaleFactor=ctypes.windll.shcore.GetScaleFactorForDevice(0)
+    root.call('tk', 'scaling', ScaleFactor/60)
+
+
+entry1 = Entry(root, show="*", width=64, justify="center")
 entry1.grid(row=0, column=0)
-button1 = tk.Button(root, text="Show", command=lambda: toggle_password(entry1, button1), width=5)
+button1 = Button(root, text="Show", command=lambda: toggle_password(entry1, button1), width=5)
 button1.grid(row=0, column=1)
 
-entry2 = tk.Entry(root, show="*", width=64, justify="center")
+entry2 = Entry(root, show="*", width=64, justify="center")
 entry2.grid(row=1, column=0)
-button2 = tk.Button(root, text="Show", command=lambda: toggle_password(entry2, button2), width=5)
+button2 = Button(root, text="Show", command=lambda: toggle_password(entry2, button2), width=5)
 button2.grid(row=1, column=1)
 
-button3 = tk.Button(root, text="Calculate SHA-256", command=calculate_sha256, width=20)
+button3 = Button(root, text="Calculate SHA-256", command=calculate_sha256, width=20)
 button3.grid(row=2, column=0, columnspan=2)
 
-entry3 = tk.Entry(root, show="*", width=64, justify="center", state="readonly")
+entry3 = Entry(root, show="*", width=64, justify="center", state="readonly")
 entry3.grid(row=3, column=0)
-button4 = tk.Button(root, text="Show", command=lambda: toggle_password(entry3, button4), width=5)
+button4 = Button(root, text="Show", command=lambda: toggle_password(entry3, button4), width=5)
 button4.grid(row=3, column=1)
 
-button5 = tk.Button(
+button5 = Button(
     root,
     text="Copy",
     command=lambda: root.clipboard_clear() or root.clipboard_append(entry3.get()) if entry3.get() != "" else None,
     width=10,
 )
 button5.grid(row=4, column=0, columnspan=2)
+
 
 root.resizable(False, False)
 root.mainloop()
