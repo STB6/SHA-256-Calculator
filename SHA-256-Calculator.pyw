@@ -1,5 +1,7 @@
 import tkinter as tk
 import hashlib
+import ctypes
+import os
 
 
 def toggle_password(entry, button):
@@ -12,36 +14,43 @@ def toggle_password(entry, button):
 
 
 def calculate_sha256():
-    if entry1.get() == entry2.get():
-        sha_signature = hashlib.sha256(entry1.get().encode()).hexdigest()
-        entry3.config(state="normal")
-        entry3.delete(0, "end")
-        entry3.insert(0, sha_signature)
-        entry3.config(fg="black")
-        entry3.config(state="readonly")
+    sha_signature = hashlib.sha256(entry1.get().encode()).hexdigest()
+    entry3.config(state="normal")
+    entry3.delete(0, "end")
+    entry3.insert(0, sha_signature)
+    entry3.config(state="readonly")
+
+
+def check_consistency(*args):
+    if content1.get() != content2.get():
+        button3.config(text="Contents do not match!", state="disabled")
     else:
-        entry3.config(state="normal")
-        entry3.delete(0, "end")
-        entry3.insert(0, "Contents do not match!")
-        entry3.config(fg="red")
-        entry3.config(show="")
-        entry3.config(state="readonly")
+        button3.config(text="Calculate SHA-256", state="normal")
 
 
 root = tk.Tk()
 root.title("SHA-256 Calculator")
 
-entry1 = tk.Entry(root, show="*", width=64, justify="center")
+if os.name == "nt":
+    ctypes.windll.shcore.SetProcessDpiAwareness(1)
+    ScaleFactor = ctypes.windll.shcore.GetScaleFactorForDevice(0)
+    root.call("tk", "scaling", ScaleFactor / 64)
+
+content1 = tk.StringVar()
+content1.trace("w", check_consistency)
+entry1 = tk.Entry(root, textvariable=content1, show="*", width=64, justify="center")
 entry1.grid(row=0, column=0)
 button1 = tk.Button(root, text="Show", command=lambda: toggle_password(entry1, button1), width=5)
 button1.grid(row=0, column=1)
 
-entry2 = tk.Entry(root, show="*", width=64, justify="center")
+content2 = tk.StringVar()
+content2.trace("w", check_consistency)
+entry2 = tk.Entry(root, textvariable=content2, show="*", width=64, justify="center")
 entry2.grid(row=1, column=0)
 button2 = tk.Button(root, text="Show", command=lambda: toggle_password(entry2, button2), width=5)
 button2.grid(row=1, column=1)
 
-button3 = tk.Button(root, text="Calculate SHA-256", command=calculate_sha256, width=20)
+button3 = tk.Button(root, text="Calculate SHA-256", command=calculate_sha256, width=20, state="disabled")
 button3.grid(row=2, column=0, columnspan=2)
 
 entry3 = tk.Entry(root, show="*", width=64, justify="center", state="readonly")
