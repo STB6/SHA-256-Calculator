@@ -1,5 +1,5 @@
-from tkinter import *
-from tkinter.ttk import *
+import tkinter
+import tkinter.ttk
 import hashlib
 import ctypes
 import os
@@ -30,8 +30,8 @@ def calculate_sha256():
         entry3.config(state="readonly")
 
 
-root = Tk()
-style = Style()
+root = tkinter.Tk()
+style = tkinter.ttk.Style()
 root.title("SHA-256 Calculator")
 
 if os.name == 'nt':
@@ -40,25 +40,25 @@ if os.name == 'nt':
     root.call('tk', 'scaling', ScaleFactor/60)
 
 
-entry1 = Entry(root, show="*", width=64, justify="center")
+entry1 = tkinter.ttk.Entry(root, show="*", width=64, justify="center")
 entry1.grid(row=0, column=0)
-button1 = Button(root, text="Show", command=lambda: toggle_password(entry1, button1), width=5)
+button1 = tkinter.ttk.Button(root, text="Show", command=lambda: toggle_password(entry1, button1), width=5)
 button1.grid(row=0, column=1)
 
-entry2 = Entry(root, show="*", width=64, justify="center")
+entry2 = tkinter.ttk.Entry(root, show="*", width=64, justify="center")
 entry2.grid(row=1, column=0)
-button2 = Button(root, text="Show", command=lambda: toggle_password(entry2, button2), width=5)
+button2 = tkinter.ttk.Button(root, text="Show", command=lambda: toggle_password(entry2, button2), width=5)
 button2.grid(row=1, column=1)
 
-button3 = Button(root, text="Calculate SHA-256", command=calculate_sha256, width=20)
+button3 = tkinter.ttk.Button(root, text="Calculate SHA-256", command=calculate_sha256, width=20)
 button3.grid(row=2, column=0, columnspan=2)
 
-entry3 = Entry(root, show="*", width=64, justify="center", state="readonly")
+entry3 = tkinter.ttk.Entry(root, show="*", width=64, justify="center", state="readonly")
 entry3.grid(row=3, column=0)
-button4 = Button(root, text="Show", command=lambda: toggle_password(entry3, button4), width=5)
+button4 = tkinter.ttk.Button(root, text="Show", command=lambda: toggle_password(entry3, button4), width=5)
 button4.grid(row=3, column=1)
 
-button5 = Button(
+button5 = tkinter.ttk.Button(
     root,
     text="Copy",
     command=lambda: root.clipboard_clear() or root.clipboard_append(entry3.get()) if entry3.get() != "" else None,
