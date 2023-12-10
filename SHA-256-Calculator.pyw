@@ -37,7 +37,7 @@ root.title("SHA-256 Calculator")
 if os.name == 'nt':
     ctypes.windll.shcore.SetProcessDpiAwareness(1)
     ScaleFactor=ctypes.windll.shcore.GetScaleFactorForDevice(0)
-    root.call('tk', 'scaling', ScaleFactor/60)
+    root.call('tk', 'scaling', ScaleFactor/70)
 
 
 entry1 = tkinter.ttk.Entry(root, show="*", width=64, justify="center")
